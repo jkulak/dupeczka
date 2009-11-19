@@ -139,7 +139,7 @@ class Phly_Twitter extends Zend_Rest_Client
     public function __get($type)
     {
         if (!in_array($type, $this->_methodTypes)) {
-            include_once 'Phly/Twitter/Exception.php';
+            include_once 'Dupa/Api/Twitter/Exception.php';
             throw new Phly_Twitter_Exception('Invalid method type "' . $type . '"');
         }
  
@@ -158,13 +158,13 @@ class Phly_Twitter extends Zend_Rest_Client
     public function __call($method, $params)
     {
         if (empty($this->_methodType)) {
-            include_once 'Phly/Twitter/Exception.php';
+            include_once 'Dupa/Api/Twitter/Exception.php';
             throw new Phly_Twitter_Exception('Invalid method "' . $method . '"');
         }
  
         $test = $this->_methodType . ucfirst($method);
         if (!method_exists($this, $test)) {
-            include_once 'Phly/Twitter/Exception.php';
+            include_once 'Dupa/Api/Twitter/Exception.php';
             throw new Phly_Twitter_Exception('Invalid method "' . $test . '"');
         }
  
@@ -332,10 +332,10 @@ class Phly_Twitter extends Zend_Rest_Client
         $path = '/statuses/update.xml';
         $len = strlen($status);
         if ($len > 140) {
-            include_once 'Phly/Twitter/Exception.php';
+            include_once 'Dupa/Api/Twitter/Exception.php';
             throw new Phly_Twitter_Exception('Status must be no more than 140 characters in length');
         } elseif (0 == $len) {
-            include_once 'Phly/Twitter/Exception.php';
+            include_once 'Dupa/Api/Twitter/Exception.php';
             throw new Phly_Twitter_Exception('Status must contain at least one character');
         }
  
@@ -548,10 +548,10 @@ class Phly_Twitter extends Zend_Rest_Client
  
         $len = strlen($text);
         if (0 == $len) {
-            include_once 'Phly/Twitter/Exception.php';
+            include_once 'Dupa/Api/Twitter/Exception.php';
             throw new Phly_Twitter_Exception('Direct message must contain at least one character');
         } elseif (140 < $len) {
-            include_once 'Phly/Twitter/Exception.php';
+            include_once 'Dupa/Api/Twitter/Exception.php';
             throw new Phly_Twitter_Exception('Direct message must contain no more than 140 characters');
         }
  
