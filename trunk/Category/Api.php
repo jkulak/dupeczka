@@ -2,7 +2,8 @@
 
 require_once 'Dupa/Category/Container.php';  
 require_once 'Dupa/Exception.php';
-require_once 'Dupa/List.php';    
+require_once 'Dupa/List.php';
+require_once 'Zend/Db.php';  
 
 /**
  * Api do zarzadzania kategoriami
@@ -36,7 +37,7 @@ class Dupa_Category_Api
 	 */
 	private function __construct()
 	{
-		$pdoParams = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8;');
+		$pdoParams = array( 'MYSQL_ATTR_INIT_COMMAND' => 'SET NAMES UTF8');
 		$params = array( 'host'		=> self::DB_HOST,
 						 'dbname'	=> self::DB_NAME,
 						 'username'	=> self::DB_USER,
@@ -46,6 +47,7 @@ class Dupa_Category_Api
 		{
 			$this->_db = Zend_Db::factory( self::DB_ADAPTER, $params );
 			$this->_db->getConnection();
+			$this->_db->fetchAll('SET NAMES utf8');
 		}
 		catch( Zend_Db_Adapter_Exception $e )
 		{

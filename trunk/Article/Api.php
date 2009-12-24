@@ -44,16 +44,23 @@ class Dupa_Article_Api
 	 */
 	private function __construct()
 	{
-		$pdoParams = array('MYSQL_ATTR_INIT_COMMAND' => 'SET NAMES UTF8;');
+		$pdoParams = array( 'MYSQL_ATTR_INIT_COMMAND' => 'SET NAMES utf8' );
+		
 		$params = array( 'host'		=> self::DB_HOST,
 						 'dbname'	=> self::DB_NAME,
 						 'username'	=> self::DB_USER,
 						 'password'	=> self::DB_PASS,
+						 'charset'	=> 'utf8',
 						'driver_options' => $pdoParams);
 		try
 		{
 			$this->_db = Zend_Db::factory( self::DB_ADAPTER, $params );
 			$this->_db->getConnection();
+			/**
+				@TODO: tymczasow wywoalanie set names - bo nie dziala ustawienie kodowania przez PDO 
+			*/
+			$this->_db->fetchAll('SET NAMES utf8');
+			
 		}
 		catch( Zend_Db_Adapter_Exception $e )
 		{
@@ -143,9 +150,9 @@ class Dupa_Article_Api
 		                'title'	    => $article->getTitle(),
 		                'lead'	    => $article->getLead(),
 		                'content'	=> $article->getContent(),
-		                'updated'	=> date( 'Y-m-d H:i:s' ),
+		                'added'	=> date('Y-m-d H:i:s'),
 		                'addedby'	=> $article->getAddBy(),
-		                'updated'	=> date( 'Y-m-d H:i:s' ),
+										'updated'	=> date( 'Y-m-d H:i:s'),
 		                'updatedby' => $article->getUpdateBy(),
 		                'activate'	=> $article->getEnableDate(),
 		                'deactivate' => $article->getDisableDate(),
