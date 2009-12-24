@@ -343,6 +343,61 @@ class Dupa_Article_Api
 	}
 	
 	/**
+	 * Pobranie ilosci artykulow
+	 * 
+	 * @param int $categoryId Id kategorii; jezeli nie podano - pobierz ze wszystkich
+	 * @param string $year Rok, z ktorego pobierac artykuly (nalezy podawac tez $month)
+	 * @param string $month Miesiac, z ktorego pobierac artykul (nalezy podawac tez $year)
+	 * 
+	 * @return Dupa_List
+	 */
+	public function getArticlesCount( $categoryId = null, $year = null, $month = null )
+	{
+	    $categoryId = $categoryId ? intval( $categoryId ) : $categoryId;
+
+	    if( $year && $month )
+	    {
+    	    $year = intval( $year );
+    	    $month = intval( $month );
+    	    $month = $month < 10 ? '0' . strval( $month ) : strval( $month );
+    	    $date = $year . '-' . $month;
+	    }
+	    
+		$list = new Dupa_List();
+	    
+	    if( $categoryId > 0 || $categoryId === null )
+	    {
+    		if( !$categoryId )
+    		{
+        		$query = 'SELECT count(*) as cnt ' .
+            		        'FROM ARTICLES ' .
+            		        ( isset( $date ) ? 'WHERE substring( added, 1, 7 ) = "' . $date . '" ': '' );
+    		}
+            else
+            {
+        		$query = 'SELECT count(*) as cnt ' .
+            		        'FROM ARTICLES a ' .
+            		        'INNER JOIN CATEGORIES_has_ARTICLES ac ON a.id = ac.ARTICLES_id ' .
+            		        'WHERE ac.CATEGORIES_id = ' . $categoryId . ' ' .
+            		        ( isset( $date ) ? 'AND substring( added, 1, 7 ) = "' . $date . '" ': '' );
+            }
+    		
+    		try
+    		{
+    		    $result = $this->_db->fetchAll( $query );
+    		}		
+    		catch( Zend_Db_Exception $e )
+    		{
+    		    throw new Dupa_Exception( 'Error getting articles list: ' . $e->getMessage(), Dupa_Exception::ERROR_DB );
+    		}
+	    }
+		else
+		    throw new Dupa_Exception( 'Error getting articles list', Dupa_Exception::ERROR_VALIDATE );
+		    
+		return $result;
+	}
+	
+	/**
 	 * Pobranie listy dat, z kiedy pochodza artykuly
 	 * 
 	 * @param int $categoryId Id kategorii; jezeli nie podano - pobierz ze wszystkich
