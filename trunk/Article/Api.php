@@ -57,7 +57,7 @@ class Dupa_Article_Api
 			$this->_db = Zend_Db::factory( self::DB_ADAPTER, $params );
 			$this->_db->getConnection();
 			/**
-				@TODO: tymczasow wywoalanie set names - bo nie dziala ustawienie kodowania przez PDO 
+				@TODO: tymczasow wywolanie set names - bo nie dziala ustawienie kodowania przez PDO 
 			*/
 			$this->_db->fetchAll('SET NAMES utf8');
 			
