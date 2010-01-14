@@ -333,7 +333,8 @@ class Dupa_Article_Api
         		    
         		    $list[$i] = $article;
     		    }
-    		    $list->cntItems = $resultCnt[0]['cnt'];
+    		    $list->cntItems = $resultCnt[0]['cnt'];    		    
+    		    $list->prepareNavigation( $pack, $packSize );
     		}
 	    }
 		else
