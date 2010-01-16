@@ -1,6 +1,7 @@
 <?php
 
-require_once 'Dupa/Article/Container.php';  
+require_once 'Dupa/Article/Container.php';
+require_once 'Dupa/Category/Container.php';   
 require_once 'Dupa/Exception.php';
 require_once 'Dupa/List.php';    
 require_once 'Zend/Db.php';   
@@ -33,9 +34,20 @@ class Dupa_Article_Api
     const SORT_ORDER_DESC     = 'desc';
     const SORT_ORDER_DEFAULT  = self::SORT_ORDER_ASC;
     
+    /**
+     * Mozliwosc sortowania po roznych datach
+     */
+    const SORT_TYPE_ID          = 'id';
+    const SORT_TYPE_ACTIVATE    = 'activate';
+    const SORT_TYPE_DEACTIVATE  = 'deactivate';
+    const SORT_TYPE_ADDED       = 'added';
+    const SORT_TYPE_DEFAULT     = self::SORT_TYPE_ACTIVATE;
+        
 	private $_db;
 	
 	static private $_instance;
+	
+	protected $_monthsNames = array( 'stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia' );
 	
 	/**
 	 * Konstruktor
@@ -112,7 +124,12 @@ class Dupa_Article_Api
     		if( $result )
     		{
     		    $article = new Dupa_Article_Container();
-    		    
+    	    
+    		    $actTime = strtotime( $result[0]['activate'] );
+    		    $fullDate = $result[0]['activate'];
+    	        $time = date( 'H:i:s', $actTime );
+    	        $date = date( 'j', $actTime ) . ' ' . $this->_monthsNames[ date( 'n', $actTime ) - 1 ] . ' ' . date( 'Y', $actTime );
+
     		    $article->setId( $result[0]['id'] );
     		    $article->setTitle( $result[0]['title'] );
     		    $article->setLead( $result[0]['lead'] );
@@ -121,9 +138,14 @@ class Dupa_Article_Api
     		    $article->setAddBy( $result[0]['addedby'] );
     		    $article->setUpdateDate( $result[0]['updated'] );
     		    $article->setUpdateBy( $result[0]['updatedby'] );
-    		    $article->setEnableDate( $result[0]['activate'] );
+    		    $article->setEnableDate( $date );
+    		    $article->setEnableTime( $time );
+    		    $article->setEnableDateFull( $fullDate );
     		    $article->setDisableDate( $result[0]['deactivate'] );
     		    $article->setStatus( $result[0]['status'] );
+
+    		    $article->setCategories( $this->getArticleCategoriesList( $article->getId() ) );
+
     		    $res = $article;
     		}
 		}
@@ -150,9 +172,9 @@ class Dupa_Article_Api
 		                'title'	    => $article->getTitle(),
 		                'lead'	    => $article->getLead(),
 		                'content'	=> $article->getContent(),
-		                'added'	=> date('Y-m-d H:i:s'),
+		                'added'	    => date('Y-m-d H:i:s'),
 		                'addedby'	=> $article->getAddBy(),
-										'updated'	=> date( 'Y-m-d H:i:s'),
+						'updated'	=> date( 'Y-m-d H:i:s'),
 		                'updatedby' => $article->getUpdateBy(),
 		                'activate'	=> $article->getEnableDate(),
 		                'deactivate' => $article->getDisableDate(),
@@ -168,16 +190,21 @@ class Dupa_Article_Api
     		}
 
     		if( $result == 1 )
-                $id = $this->_db->lastInsertId();
+    		{
+    		    $res = $this->_db->lastInsertId();
+
+    		    if( $categories = $article->getCategories() )
+    		        $this->addArticleCategories( $res, $categories );
+    		}                
             else
                 throw new Dupa_Exception( 'Error adding article', Dupa_Exception::ERROR_DB );
 		}
 		else
 		    throw new Dupa_Exception( 'Error adding article', Dupa_Exception::ERROR_VALIDATE );
 
-		return $id;
+		return $res;
 	}	
-	
+
 	/**
 	 * Modyfikacja artykulu
 	 * 
@@ -197,23 +224,32 @@ class Dupa_Article_Api
 		                'content'	=> $article->getContent(),
 		                'updated'	=> date( 'Y-m-d H:i:s' ),
 		                'updatedby' => $article->getUpdateBy(),
-		                'activate'	=> $article->getEnableDate(),
-		                'deactivate' => $article->getDisableDate(),
+		                'activate'	=> $article->getEnableDate() ? $article->getEnableDate() : null,
+		                'deactivate' => $article->getDisableDate() ? $article->getDisableDate() : null,
 		                'status'	=> $article->getStatus() );
 
 		    try
 		    {
-    		    $result = $this->_db->update( 'ARTICLES', $data, 'id = ' . $article->getId() );
+    		    $res = $this->_db->update( 'ARTICLES', $data, 'id = ' . $article->getId() );
 		    }
 			catch( Zend_Db_Exception $e )
     		{
     		    throw new Dupa_Exception( 'Error setting article: ' . $e->getMessage(), Dupa_Exception::ERROR_DB );
     		}
+
+    		if( $res == 1 )
+    		{
+    		    $this->delArticleCategories( $article->getId() );
+    		    if( $categories = $article->getCategories() )
+    		        $this->addArticleCategories( $article->getId(), $categories );
+    		}                
+            else
+                throw new Dupa_Exception( 'Error adding article', Dupa_Exception::ERROR_DB );
 		}
 		else
 		    throw new Dupa_Exception( 'Error setting article', Dupa_Exception::ERROR_VALIDATE );
 
-		return $result;
+		return $res;
 	}
 	
 	/**
@@ -230,9 +266,10 @@ class Dupa_Article_Api
         
 		if( $id > 0 )
 		{
+		    $data = array( 'status'	=> Dupa_Article_Container::STATUS_DELETED );
 		    try
 		    {
-    		    $result = $this->_db->delete( 'ARTICLES', 'id = ' . $id );
+    		    $res = $this->_db->update( 'ARTICLES', $data, 'id = ' . $id );
 		    }
 			catch( Zend_Db_Exception $e )
     		{
@@ -242,7 +279,7 @@ class Dupa_Article_Api
 		else
 		    throw new Dupa_Exception( 'Error deleting article', Dupa_Exception::ERROR_VALIDATE );
 
-		return $result;
+		return $res;
 	}	
 	
 	/**
@@ -319,7 +356,12 @@ class Dupa_Article_Api
     		    for( $i = 0, $cnt = count( $result ); $i < $cnt; $i++ )
     		    {
         		    $article = new Dupa_Article_Container();
-        		    
+    	    
+        		    $actTime = strtotime( $result[0]['activate'] );
+        		    $fullDate = $result[0]['activate'];
+        	        $time = date( 'H:i:s', $actTime );
+        	        $date = date( 'j', $actTime ) . ' ' . $this->_monthsNames[ date( 'n', $actTime ) - 1 ] . ' ' . date( 'Y', $actTime );
+            		    
         		    $article->setId( $result[$i]['id'] );
         		    $article->setTitle( $result[$i]['title'] );
         		    $article->setLead( $result[$i]['lead'] );
@@ -327,9 +369,13 @@ class Dupa_Article_Api
         		    $article->setAddBy( $result[$i]['addedby'] );
         		    $article->setUpdateDate( $result[$i]['updated'] );
         		    $article->setUpdateBy( $result[$i]['updatedby'] );
-        		    $article->setEnableDate( $result[$i]['activate'] );
+        		    $article->setEnableDate( $date );
+        		    $article->setEnableTime( $time );
+        		    $article->setEnableDateFull( $fullDate );
         		    $article->setDisableDate( $result[$i]['deactivate'] );
         		    $article->setStatus( $result[$i]['status'] );
+        		    
+        		    $article->setCategories( $this->getArticleCategoriesList( $article->getId() ) );
         		    
         		    $list[$i] = $article;
     		    }
@@ -457,6 +503,155 @@ class Dupa_Article_Api
 	    }
 
 	    return $list;
+	}
+
+	/**
+	 * Dodanie kategorii do artykulu
+	 * 
+	 * @param $articleId Id artykulu
+	 * @param $catId Id kategorii
+	 * 
+	 * @return bool Czy operacja sie powiodla
+	 */
+	public function addArticleCategory( $articleId, $catId )
+	{
+	    $res = null;
+	    $articleId = intval( $articleId );
+	    $catId = intval( $catId );
+
+		if( $articleId > 0 && $catId > 0 )
+		{
+		    $data = array(
+		                'CATEGORIES_id'	 => $catId,
+		                'ARTICLES_id'	 => $articleId );
+
+		    try
+		    {
+    		    $result = $this->_db->insert( 'categories_has_articles', $data );
+		    }
+			catch( Zend_Db_Exception $e )
+    		{
+    		    throw new Dupa_Exception( 'Error adding category to article: ' . $e->getMessage(), Dupa_Exception::ERROR_DB );
+    		}
+		}
+		else
+		    throw new Dupa_Exception( 'Error adding category to article', Dupa_Exception::ERROR_VALIDATE );
+
+		return $result;
+	}
+
+	/**
+	 * Dodanie listy kategorii do artykulu
+	 * 
+	 * @param $articleId Id artykulu
+	 * @param $catId Id kategorii
+	 * 
+	 * @return bool Czy operacja sie powiodla
+	 */
+	public function addArticleCategories( $articleId, Dupa_List $cats )
+	{
+	    $res = null;
+	    $articleId = intval( $articleId );
+
+	    $cnt = count( $cats );
+
+		if( $articleId > 0 && $cnt > 0 )
+		{
+            for( $i = 0; $i < $cnt; $i++ )
+                $res = $this->addArticleCategory( $articleId, $cats[$i]->getId() );
+		}
+		else
+		    throw new Dupa_Exception( 'Error adding categories to article', Dupa_Exception::ERROR_VALIDATE );
+
+		return $res;
+	}
+	
+	/**
+	 * Usuniecie wszystkich kategorii artykulu
+	 * 
+	 * @param $articleId Id artykulu
+	 * 
+	 * @return bool Czy usuniecie sie powiodlo
+	 */
+	public function delArticleCategories( $articleId )
+	{
+	    $res = null;
+        $articleId = intval( $articleId );
+        
+		if( $articleId > 0 )
+		{
+		    try
+		    {
+    		    $res = $this->_db->delete( 'categories_has_articles', 'ARTICLES_id = ' . $articleId );
+		    }
+			catch( Zend_Db_Exception $e )
+    		{
+    		    throw new Dupa_Exception( 'Error deleting article categories: ' . $e->getMessage(), Dupa_Exception::ERROR_DB );
+    		}
+		}
+		else
+		    throw new Dupa_Exception( 'Error deleting article categories', Dupa_Exception::ERROR_VALIDATE );
+
+		return $res;
+	}	
+	
+	/**
+	 * Pobranie listy kategorii artykulu
+	 * 
+	 * @param int $articleId Id artykulu
+	 * 
+	 * @return Dupa_List
+	 */
+	public function getArticleCategoriesList( $articleId )
+	{
+	    $articleId = intval( $articleId );
+
+		$list = new Dupa_List();
+	    
+	    if( $articleId > 0 )
+	    {
+    		$query = 'SELECT id, name, added, addedby, updated, updatedby ' .
+    		         'FROM categories c ' .
+    		         'INNER JOIN categories_has_articles ca ON ca.CATEGORIES_id = c.id ' .
+    		         'WHERE ca.ARTICLES_id = ' . $articleId;
+    		$queryCnt = 'SELECT count(*) as cnt ' .
+    		         'FROM categories c ' .
+    		         'INNER JOIN categories_has_articles ca ON ca.CATEGORIES_id = c.id ' .
+    		         'WHERE ca.ARTICLES_id = ' . $articleId;
+		
+    		try
+    		{
+    		    $result = $this->_db->fetchAll( $query );
+    		    $resultCnt = $this->_db->fetchAll( $queryCnt );
+
+    		}		
+    		catch( Zend_Db_Exception $e )
+    		{
+    		    throw new Dupa_Exception( 'Error getting article categories list: ' . $e->getMessage(), Dupa_Exception::ERROR_DB );
+    		}
+    
+    		if( $result )
+    		{
+    		    for( $i = 0, $cnt = count( $result ); $i < $cnt; $i++ )
+    		    {
+        		    $cat = new Dupa_Category_Container();
+        		    
+        		    $cat->setId( $result[$i]['id'] );
+        		    $cat->setName( $result[$i]['name'] );
+        		    $cat->setAddDate( $result[$i]['added'] );
+        		    $cat->setAddBy( $result[$i]['addedby'] );
+        		    $cat->setUpdateDate( $result[$i]['updated'] );
+        		    $cat->setUpdateBy( $result[$i]['updatedby'] );
+        		    
+        		    $list[$i] = $cat;
+    		    }
+    		    $list->cntItems = $resultCnt[0]['cnt'];    		    
+    		}
+	    }
+		else
+		    throw new Dupa_Exception( 'Error getting article categories list', Dupa_Exception::ERROR_VALIDATE );
+		    
+		return $list;
 	}
 	
     static public function checkSortOrder( $sortOrder )

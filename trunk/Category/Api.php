@@ -264,4 +264,31 @@ class Dupa_Category_Api
 
 		return $list;
 	}
+	
+	/**
+	 * Pobranie listy artykulow
+	 * 
+	 * @param int $pack Numer paczki
+	 * @param int $packSize Wielkosc paczki
+	 * 
+	 * @return Dupa_List
+	 */
+	public function getCategoriesCount()
+	{
+	    $res = null;
+
+		$query = 'SELECT count(*) as cnt ' .
+		         'FROM CATEGORIES';
+		
+		try
+		{
+		    $res = $this->_db->fetchAll( $query );
+		}		
+		catch( Zend_Db_Exception $e )
+		{
+		    throw new Dupa_Exception( 'Error getting categories list', Dupa_Exception::ERROR_DB );
+		}
+
+		return $res;
+	}
 }

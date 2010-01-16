@@ -12,7 +12,8 @@ class Dupa_Article_Container
 	 */
 	const STATUS_ENABLED	= 'enabled';
 	const STATUS_DISABLED	= 'disabled';
-	const STATUS_TEST		= 'test';
+	const STATUS_DELETED	= 'deleted';
+	const STATUS_DEV	    = 'dev';
 
 	/**
 	 * Id artykulu
@@ -71,11 +72,25 @@ class Dupa_Article_Container
 	protected $_updateBy;
 	
 	/**
-	 * Data wlaczenia artykulu
+	 * Pelna Data (dzien, miesiac, rok, godzina, minuta) wlaczenia artykulu
+	 * 
+	 * @var string
+	 */
+	protected $_enableDateFull;
+	
+	/**
+	 * Data (dzien, miesiac, rok) wlaczenia artykulu
 	 * 
 	 * @var string
 	 */
 	protected $_enableDate;
+	
+	/**
+	 * Czas (godzina, minuta) wlaczenia artykulu
+	 * 
+	 * @var string
+	 */
+	protected $_enableTime;
 	
 	/**
 	 * Data wylaczenia artykulu
@@ -90,6 +105,13 @@ class Dupa_Article_Container
 	 * @var (enabled/disabled/test)
 	 */
 	protected $_status; 
+	
+	/**
+	 * Kategorie
+	 * 
+	 * @var Dupa_List of Dupa_Article_Container
+	 */
+	protected $_categories; 
 	
 	/**
 	 * Konstruktor
@@ -113,6 +135,16 @@ class Dupa_Article_Container
         $this->_enableDate = $enableDate;
     }
 
+	public function setEnableDateFull( $enableDate )
+    {
+        $this->_enableDateFull = $enableDate;
+    }
+    
+	public function setEnableTime( $enableTime )
+    {
+        $this->_enableTime = $enableTime;
+    }
+    
 	public function setUpdateBy( $updateBy )
     {
         $this->_updateBy = $updateBy;
@@ -163,11 +195,21 @@ class Dupa_Article_Container
         return $this->_disableDate;
     }
 
+	public function getEnableDateFull()
+    {
+        return $this->_enableDateFull;
+    }
+    
 	public function getEnableDate()
     {
         return $this->_enableDate;
     }
 
+	public function getEnableTime()
+    {
+        return $this->_enableTime;
+    }
+    
 	public function getUpdateBy()
     {
         return $this->_updateBy;
@@ -208,11 +250,37 @@ class Dupa_Article_Container
         return $this->_id;
     }
 
+	public function getCategory( $index )
+    {
+        if( isset( $this->_categories[$index] ) )
+            return $this->_categories[$index];
+        else
+            return null;
+    }
+    
+	public function getCategories()
+    {
+        return $this->_categories;
+    }
+
+	public function setCategories( Dupa_List $categories )
+    {
+        $this->_categories = $categories;
+    }
+
+	public function setCategory( Dupa_Category_Container $category )
+    {
+        if( !$this->_categories )
+            $this->_categories = new Dupa_List();
+        $this->_categories[ count( $this->_categories ) ] = $category;
+    }
+    
     static public function checkStatus( $status )
     {
         return in_array( $status, array( self::STATUS_ENABLED,
                                          self::STATUS_DISABLED,
-                                         self::STATUS_TEST ) ) ? $status : null;
+                                         self::STATUS_DELETED,
+                                         self::STATUS_DEV ) ) ? $status : null;
     }
 }
 
