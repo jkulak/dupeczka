@@ -15,17 +15,17 @@ require_once 'Zend/Db.php';
  */
 class Dupa_Article_Api
 {
-	const DB_ADAPTER	= 'Pdo_Mysql';
+	const DB_ADAPTER = 'Pdo_Mysql';
 	const DB_HOST		= 'localhost';
-	const DB_NAME		= 'hhbd_omd';
-	const DB_USER		= 'hhbd_www';
-	const DB_PASS		= 'www';
+	const DB_NAME		= 'omnicom7';
+	const DB_USER		= 'omnicom7';
+	const DB_PASS		= 'ping298pong';
 	
 	/**
 	 * Domyslne wartosci paczkowania
 	 */
     const DEFAULT_PACK        = 1;
-    const DEFAULT_PACKSIZE    = 10;
+    const DEFAULT_PACKSIZE    = 100;
 	
 	/**
 	 * Domyslne wartosci kierunku sortowania
@@ -110,7 +110,7 @@ class Dupa_Article_Api
 		
 		if( $id > 0 )
 		{
-    		$query = 'SELECT id, title, lead, content, added, addedby, updated, updatedby, activate, deactivate, status FROM ARTICLES WHERE id = ?';
+    		$query = 'SELECT id, title, lead, content, added, addedby, updated, updatedby, activate, deactivate, status FROM articles WHERE id = ?';
     		
     		try
     		{
@@ -182,7 +182,7 @@ class Dupa_Article_Api
 
 		    try
 		    {
-    		    $result = $this->_db->insert( 'ARTICLES', $data );
+    		    $result = $this->_db->insert( 'articles', $data );
 		    }
 			catch( Zend_Db_Exception $e )
     		{
@@ -230,7 +230,7 @@ class Dupa_Article_Api
 
 		    try
 		    {
-    		    $res = $this->_db->update( 'ARTICLES', $data, 'id = ' . $article->getId() );
+    		    $res = $this->_db->update( 'articles', $data, 'id = ' . $article->getId() );
 		    }
 			catch( Zend_Db_Exception $e )
     		{
@@ -269,7 +269,7 @@ class Dupa_Article_Api
 		    $data = array( 'status'	=> Dupa_Article_Container::STATUS_DELETED );
 		    try
 		    {
-    		    $res = $this->_db->update( 'ARTICLES', $data, 'id = ' . $id );
+    		    $res = $this->_db->update( 'articles', $data, 'id = ' . $id );
 		    }
 			catch( Zend_Db_Exception $e )
     		{
@@ -319,25 +319,25 @@ class Dupa_Article_Api
     		if( !$categoryId )
     		{
         		$query = 'SELECT id, title, lead, added, addedby, updated, updatedby, activate, deactivate, status ' .
-        		         'FROM ARTICLES ' .
+        		         'FROM articles ' .
         		         ( isset( $date ) ? 'WHERE substring( added, 1, 7 ) = "' . $date . '" ': '' ) .
         		         'ORDER by id ' . $order . ' limit ' . $start . ', ' . $end;
         		$queryCnt = 'SELECT count(*) as cnt ' .
-            		        'FROM ARTICLES ' .
+            		        'FROM articles ' .
             		        ( isset( $date ) ? 'WHERE substring( added, 1, 7 ) = "' . $date . '" ': '' );
     		}
             else
             {
         		$query = 'SELECT id, title, lead, added, addedby, updated, updatedby, activate, deactivate, status ' .
-        		         'FROM ARTICLES a ' .
-        		         'INNER JOIN CATEGORIES_has_ARTICLES ac ON a.id = ac.ARTICLES_id ' .
-        		         'WHERE ac.CATEGORIES_id = ' . $categoryId . ' ' .
+        		         'FROM articles a ' .
+        		         'INNER JOIN categories_has_articles ac ON a.id = ac.articles_id ' .
+        		         'WHERE ac.categories_id = ' . $categoryId . ' ' .
         		         ( isset( $date ) ? 'AND substring( added, 1, 7 ) = "' . $date . '" ': '' ) .
         		         'ORDER by id ' . $order . ' limit ' . $start . ', ' . $end;
         		$queryCnt = 'SELECT count(*) as cnt ' .
-            		        'FROM ARTICLES a ' .
-            		        'INNER JOIN CATEGORIES_has_ARTICLES ac ON a.id = ac.ARTICLES_id ' .
-            		        'WHERE ac.CATEGORIES_id = ' . $categoryId . ' ' .
+            		        'FROM articles a ' .
+            		        'INNER JOIN categories_has_articles ac ON a.id = ac.articles_id ' .
+            		        'WHERE ac.categories_id = ' . $categoryId . ' ' .
             		        ( isset( $date ) ? 'AND substring( added, 1, 7 ) = "' . $date . '" ': '' );
             }
     		
@@ -417,15 +417,15 @@ class Dupa_Article_Api
     		if( !$categoryId )
     		{
         		$query = 'SELECT count(*) as cnt ' .
-            		        'FROM ARTICLES ' .
+            		        'FROM articles ' .
             		        ( isset( $date ) ? 'WHERE substring( added, 1, 7 ) = "' . $date . '" ': '' );
     		}
             else
             {
         		$query = 'SELECT count(*) as cnt ' .
-            		        'FROM ARTICLES a ' .
-            		        'INNER JOIN CATEGORIES_has_ARTICLES ac ON a.id = ac.ARTICLES_id ' .
-            		        'WHERE ac.CATEGORIES_id = ' . $categoryId . ' ' .
+            		        'FROM articles a ' .
+            		        'INNER JOIN categories_has_articles ac ON a.id = ac.articles_id ' .
+            		        'WHERE ac.categories_id = ' . $categoryId . ' ' .
             		        ( isset( $date ) ? 'AND substring( added, 1, 7 ) = "' . $date . '" ': '' );
             }
     		
@@ -469,7 +469,7 @@ class Dupa_Article_Api
 	        if( !$categoryId )
     		{
         		$query = 'SELECT substring( added, 1, 4 ) as year, substring( added, 6, 2 ) as month ' .
-        		         'FROM ARTICLES ' . 
+        		         'FROM articles ' . 
         		         'GROUP BY substring( added, 1, 7 ) ' .
         		         'ORDER BY year, month desc limit ' . $start . ', ' . $end;
     		}
@@ -477,8 +477,8 @@ class Dupa_Article_Api
             {
         		$query = 'SELECT substring( added, 1, 4 ) as year, substring( added, 6, 2 ) as month ' .
         		         'FROM articles a ' .
-        		         'INNER JOIN CATEGORIES_has_ARTICLES ac ON a.id = ac.ARTICLES_id ' .
-        		         'WHERE ac.CATEGORIES_id = ' . $categoryId . ' ' .
+        		         'INNER JOIN categories_has_articles ac ON a.id = ac.articles_id ' .
+        		         'WHERE ac.categories_id = ' . $categoryId . ' ' .
         		         'GROUP BY substring( added, 1, 7 ) ' .
         		         'ORDER BY year, month desc limit ' . $start . ', ' . $end;
             }
@@ -522,8 +522,8 @@ class Dupa_Article_Api
 		if( $articleId > 0 && $catId > 0 )
 		{
 		    $data = array(
-		                'CATEGORIES_id'	 => $catId,
-		                'ARTICLES_id'	 => $articleId );
+		                'categories_id'	 => $catId,
+		                'articles_id'	 => $articleId );
 
 		    try
 		    {
@@ -582,7 +582,7 @@ class Dupa_Article_Api
 		{
 		    try
 		    {
-    		    $res = $this->_db->delete( 'categories_has_articles', 'ARTICLES_id = ' . $articleId );
+    		    $res = $this->_db->delete( 'categories_has_articles', 'articles_id = ' . $articleId );
 		    }
 			catch( Zend_Db_Exception $e )
     		{
@@ -612,12 +612,12 @@ class Dupa_Article_Api
 	    {
     		$query = 'SELECT id, name, added, addedby, updated, updatedby ' .
     		         'FROM categories c ' .
-    		         'INNER JOIN categories_has_articles ca ON ca.CATEGORIES_id = c.id ' .
-    		         'WHERE ca.ARTICLES_id = ' . $articleId;
+    		         'INNER JOIN categories_has_articles ca ON ca.categories_id = c.id ' .
+    		         'WHERE ca.articles_id = ' . $articleId;
     		$queryCnt = 'SELECT count(*) as cnt ' .
     		         'FROM categories c ' .
-    		         'INNER JOIN categories_has_articles ca ON ca.CATEGORIES_id = c.id ' .
-    		         'WHERE ca.ARTICLES_id = ' . $articleId;
+    		         'INNER JOIN categories_has_articles ca ON ca.categories_id = c.id ' .
+    		         'WHERE ca.articles_id = ' . $articleId;
 		
     		try
     		{
