@@ -294,7 +294,119 @@ class Dupa_Article_Api
 	 * 
 	 * @return Dupa_List
 	 */
-	public function getArticlesList( $categoryId = null, $pack = null, $packSize = null, $order = null, $year = null, $month = null )
+	public function getArticlesList( $categoryId = null, $pack = null, $packSize = null, $order = null, $year = null, $month = null, $sort = null )
+	{
+	    $pack = intval( $pack ) ? intval( $pack ) : self::DEFAULT_PACK;
+	    $packSize = intval( $packSize ) ? intval( $packSize ) : self::DEFAULT_PACKSIZE;
+	    $categoryId = $categoryId ? intval( $categoryId ) : $categoryId;
+	    $order = self::checkSortOrder( $order );
+	    $sort = self::checkSort( $sort );
+	    
+	    if( $year && $month )
+	    {
+    	    $year = intval( $year );
+    	    $month = intval( $month );
+    	    $month = $month < 10 ? '0' . strval( $month ) : strval( $month );
+    	    $date = $year . '-' . $month;
+	    }
+	    
+		$list = new Dupa_List();
+	    
+	    if( $categoryId > 0 || $categoryId === null )
+	    {    	    
+    		$start = ( $pack - 1 ) * $packSize;
+    		$end = $packSize;
+    		
+    		if( !$categoryId )
+    		{
+        		$query = 'SELECT id, title, lead, added, addedby, updated, updatedby, activate, deactivate, status ' .
+        		         'FROM articles ' .
+        		         'WHERE status = "' . Dupa_Article_Container::STATUS_ENABLED . ( isset( $date ) ? '" and substring( added, 1, 7 ) = "' . $date . '" ': '' ) .
+        		         'and activate is not null ' .
+        		         'ORDER by ' . $sort . ' ' . $order . ' limit ' . $start . ', ' . $end;
+        		$queryCnt = 'SELECT count(*) as cnt ' .
+            		        'FROM articles ' .
+            		        'WHERE status = "' . Dupa_Article_Container::STATUS_ENABLED . ( isset( $date ) ? '" and substring( added, 1, 7 ) = "' . $date . '" ': '' ) .
+        		         	'and activate is not null';
+    		}
+            else
+            {
+        		$query = 'SELECT id, title, lead, added, addedby, updated, updatedby, activate, deactivate, status ' .
+        		         'FROM articles a ' .
+        		         'INNER JOIN categories_has_articles ac ON a.id = ac.articles_id ' .
+        		         'WHERE status = "' . Dupa_Article_Container::STATUS_ENABLED . '" and ac.categories_id = ' . $categoryId . ' ' .
+        		         'and activate is not null ' .
+        		         ( isset( $date ) ? 'AND substring( added, 1, 7 ) = "' . $date . '" ': '' ) .
+        		         'ORDER by ' . $sort . ' ' . $order . ' limit ' . $start . ', ' . $end;
+        		$queryCnt = 'SELECT count(*) as cnt ' .
+            		        'FROM articles a ' .
+            		        'INNER JOIN categories_has_articles ac ON a.id = ac.articles_id ' .
+            		        'WHERE status = "' . Dupa_Article_Container::STATUS_ENABLED . '" and ac.categories_id = ' . $categoryId . ' ' .
+        		            'and activate is not null ' .
+            		        ( isset( $date ) ? 'AND substring( added, 1, 7 ) = "' . $date . '" ': '' );
+            }
+    		
+    		try
+    		{
+    		    $result = $this->_db->fetchAll( $query );
+    		    $resultCnt = $this->_db->fetchAll( $queryCnt );
+    		}		
+    		catch( Zend_Db_Exception $e )
+    		{
+    		    throw new Dupa_Exception( 'Error getting articles list: ' . $e->getMessage(), Dupa_Exception::ERROR_DB );
+    		}
+    
+    		if( $result )
+    		{
+    		    for( $i = 0, $cnt = count( $result ); $i < $cnt; $i++ )
+    		    {
+        		    $article = new Dupa_Article_Container();
+    	    
+        		    $actTime = $result[$i]['activate'] ? strtotime( $result[$i]['activate'] ) : null;
+        		    $fullDate = $result[$i]['activate'];
+        	        $time = $actTime ? date( 'H:i:s', $actTime ) : null;
+        	        $date = $actTime ? date( 'j', $actTime ) . ' ' . $this->_monthsNames[ date( 'n', $actTime ) - 1 ] . ' ' . date( 'Y', $actTime ) : null;
+            		    
+        		    $article->setId( $result[$i]['id'] );
+        		    $article->setTitle( $result[$i]['title'] );
+        		    $article->setLead( $result[$i]['lead'] );
+        		    $article->setAddDate( $result[$i]['added'] );
+        		    $article->setAddBy( $result[$i]['addedby'] );
+        		    $article->setUpdateDate( $result[$i]['updated'] );
+        		    $article->setUpdateBy( $result[$i]['updatedby'] );
+        		    $article->setEnableDate( $date );
+        		    $article->setEnableTime( $time );
+        		    $article->setEnableDateFull( $fullDate );
+        		    $article->setDisableDate( $result[$i]['deactivate'] );
+        		    $article->setStatus( $result[$i]['status'] );
+        		    
+        		    $article->setCategories( $this->getArticleCategoriesList( $article->getId() ) );
+        		    
+        		    $list[$i] = $article;
+    		    }
+    		    $list->cntItems = $resultCnt[0]['cnt'];    		    
+    		    $list->prepareNavigation( $pack, $packSize );
+    		}
+	    }
+		else
+		    throw new Dupa_Exception( 'Error getting articles list', Dupa_Exception::ERROR_VALIDATE );
+		    
+		return $list;
+	}
+	
+	/**
+	 * Pobranie listy artykulow do formatki
+	 * 
+	 * @param int $categoryId Id kategorii; jezeli nie podano - pobierz ze wszystkich
+	 * @param int $pack Numer paczki
+	 * @param int $packSize Wielkosc paczki
+	 * @param string $order Sortowanie
+	 * @param string $year Rok, z ktorego pobierac artykuly (nalezy podawac tez $month)
+	 * @param string $month Miesiac, z ktorego pobierac artykul (nalezy podawac tez $year)
+	 * 
+	 * @return Dupa_List
+	 */
+	public function getArticlesListForm( $categoryId = null, $pack = null, $packSize = null, $order = null, $year = null, $month = null )
 	{
 	    $pack = intval( $pack ) ? intval( $pack ) : self::DEFAULT_PACK;
 	    $packSize = intval( $packSize ) ? intval( $packSize ) : self::DEFAULT_PACKSIZE;
@@ -357,8 +469,8 @@ class Dupa_Article_Api
     		    {
         		    $article = new Dupa_Article_Container();
     	    
-        		    $actTime = strtotime( $result[0]['activate'] );
-        		    $fullDate = $result[0]['activate'];
+        		    $actTime = strtotime( $result[$i]['activate'] );
+        		    $fullDate = $result[$i]['activate'];
         	        $time = date( 'H:i:s', $actTime );
         	        $date = date( 'j', $actTime ) . ' ' . $this->_monthsNames[ date( 'n', $actTime ) - 1 ] . ' ' . date( 'Y', $actTime );
             		    
@@ -399,6 +511,61 @@ class Dupa_Article_Api
 	 * @return Dupa_List
 	 */
 	public function getArticlesCount( $categoryId = null, $year = null, $month = null )
+	{
+	    $categoryId = $categoryId ? intval( $categoryId ) : $categoryId;
+
+	    if( $year && $month )
+	    {
+    	    $year = intval( $year );
+    	    $month = intval( $month );
+    	    $month = $month < 10 ? '0' . strval( $month ) : strval( $month );
+    	    $date = $year . '-' . $month;
+	    }
+	    
+		$list = new Dupa_List();
+	    
+	    if( $categoryId > 0 || $categoryId === null )
+	    {
+    		if( !$categoryId )
+    		{
+        		$query = 'SELECT count(*) as cnt ' .
+            		        'FROM articles ' .
+            		        ( isset( $date ) ? 'WHERE status = "' . Dupa_Article_Container::STATUS_ENABLED . '" and substring( added, 1, 7 ) = "' . $date . '" ': '' );
+    		}
+            else
+            {
+        		$query = 'SELECT count(*) as cnt ' .
+            		        'FROM articles a ' .
+            		        'INNER JOIN categories_has_articles ac ON a.id = ac.articles_id ' .
+            		        'WHERE status = "' . Dupa_Article_Container::STATUS_ENABLED . '" and ac.categories_id = ' . $categoryId . ' ' .
+            		        ( isset( $date ) ? 'AND substring( added, 1, 7 ) = "' . $date . '" ': '' );
+            }
+    		
+    		try
+    		{
+    		    $result = $this->_db->fetchAll( $query );
+    		}		
+    		catch( Zend_Db_Exception $e )
+    		{
+    		    throw new Dupa_Exception( 'Error getting articles list: ' . $e->getMessage(), Dupa_Exception::ERROR_DB );
+    		}
+	    }
+		else
+		    throw new Dupa_Exception( 'Error getting articles list', Dupa_Exception::ERROR_VALIDATE );
+		    
+		return $result;
+	}
+	
+	/**
+	 * Pobranie ilosci artykulow dla formatki
+	 * 
+	 * @param int $categoryId Id kategorii; jezeli nie podano - pobierz ze wszystkich
+	 * @param string $year Rok, z ktorego pobierac artykuly (nalezy podawac tez $month)
+	 * @param string $month Miesiac, z ktorego pobierac artykul (nalezy podawac tez $year)
+	 * 
+	 * @return Dupa_List
+	 */
+	public function getArticlesCountForm( $categoryId = null, $year = null, $month = null )
 	{
 	    $categoryId = $categoryId ? intval( $categoryId ) : $categoryId;
 
@@ -658,5 +825,13 @@ class Dupa_Article_Api
     {
         return in_array( $sortOrder, array( self::SORT_ORDER_ASC,
                                             self::SORT_ORDER_DESC ) ) ? $sortOrder : self::SORT_ORDER_DEFAULT;
+    }
+	
+    static public function checkSort( $sort )
+    {
+        return in_array( $sort, array( self::SORT_TYPE_ACTIVATE,
+                                       self::SORT_TYPE_ADDED,
+                                       self::SORT_TYPE_DEACTIVATE,
+                                       self::SORT_TYPE_ID ) ) ? $sortOrder : self::SORT_TYPE_DEFAULT;
     }
 }
