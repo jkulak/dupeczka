@@ -1,0 +1,21 @@
+<?php echo $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+<head>
+<?php echo $this->headMeta(); ?>
+<?php echo $this->headTitle(); ?>
+<?php $this->headLink()->prependStylesheet($this->baseUrl() . '/css/s.css'); ?>
+<?php echo $this->cssHelper() ?>
+<?php if (isset($this->appIncludes['jquery'])) $this->headScript()->appendFile($this->appIncludes['jquery']); ?>
+<?php if (isset($this->appIncludes['extjs'])) $this->headScript()->appendFile($this->appIncludes['extjs']); ?>
+<?php if (isset($this->appIncludes['jdupa'])) $this->headScript()->appendFile($this->appIncludes['jdupa']); ?>
+<?php echo $this->javascriptHelper() ?>
+
+<?php echo $this->headScript(); ?>
+<meta name="author" content="jkulak">
+</head>
+<body>
+<div id="content">
+	<?php echo $this->layout()->content; ?>
+</div>
+</body>
+</html>
