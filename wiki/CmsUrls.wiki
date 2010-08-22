@@ -1,0 +1,52 @@
+#summary URLs description for CMS
+
+= Cms URLs =
+
+RESTful URLs
+
+== Articles ==
+
+|| *Description* || *URL* || Http method || 
+|| Main site || / || GET ||
+|| Articles list || /articles || GET ||
+|| View article || /articles/{article_id} || GET ||
+|| Edit article form || /articles/{article_id}/edit || GET ||
+|| New article form || /articles/new || GET ||
+|| Save/update article || /articles/{article_id} || PUT ||
+|| Delete article || /articles/{article_id} || DELETE ||
+
+
+== Categories ==
+
+|| *Description* || *URL* || Http method || 
+|| Main site || / || GET ||
+|| Category list || /categories || GET ||
+|| View category || /categories/{category_id} || GET ||
+|| Edit category form || /categories/{category_id}/edit || GET ||
+|| New category form || /categories/new || GET ||
+|| Save/update category || /categories/{category_id} || PUT ||
+|| Delete category || /categories/{category_id} || DELETE ||
+
+
+== Galeries ==
+
+|| *Description* || *URL* || Http method || 
+|| Main site || / || GET ||
+|| Galleries list || /galleries || GET ||
+|| View gallery || /galleries/{gallery_id} || GET ||
+|| Edit gallery form || /galleries/{gallery_id}/edit || GET ||
+|| New gallery form || /galleries/new || GET ||
+|| Save/update gallery || /galleries/{gallery_id} || PUT ||
+|| Delete gallery || /galleries/{gallery_id} || DELETE ||
+
+== Pictures == 
+Or media/attachments? (videos, pictures, other files)
+
+|| *Description* || *URL* || Http method || 
+|| Main site || / || GET ||
+|| Pictures list || /pictures || GET ||
+|| View picture || /pictures/{picture_id} || GET ||
+|| Edit picture form || /pictures/{picture_id}/edit || GET ||
+|| New picture form || /pictures/new || GET ||
+|| Save/update picture || /pictures/{picture_id} || PUT ||
+|| Delete picture || /pictures/{picture_id} || DELETE ||
