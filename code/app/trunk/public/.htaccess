@@ -2,7 +2,7 @@
 SetEnv APPLICATION_ENV development
 
 # sciezka do biblioteki Zenda
-SetEnv GLOBAL_LIB_PATH /usr/httpd/lib/external
+SetEnv EXTERNAL_ZEND_PATH /usr/httpd/lib/external
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]

@@ -9,13 +9,13 @@ defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 // Define external Zend Path
-defined('GLOBAL_LIB_PATH')
-    || define('GLOBAL_LIB_PATH', (getenv('GLOBAL_LIB_PATH') ? getenv('GLOBAL_LIB_PATH') : ''));
+defined('EXTERNAL_ZEND_PATH')
+    || define('EXTERNAL_ZEND_PATH', (getenv('EXTERNAL_ZEND_PATH') ? getenv('EXTERNAL_ZEND_PATH') : ''));
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../library'),
-    realpath(GLOBAL_LIB_PATH),
+    realpath(EXTERNAL_ZEND_PATH),
     get_include_path(),
 )));
 
@@ -27,4 +27,8 @@ $application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
+
+// FirePHP
+require_once 'firephp/fb.php';
+
 $application->bootstrap()->run();
