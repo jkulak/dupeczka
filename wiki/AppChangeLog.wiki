@@ -1,0 +1,14 @@
+=Zmiany wprowadzane w starterze=
+
+== 21 lutego 2010 ==
+  * dodałem odczytywanie routes z pliku konfiguracyjnego config/routes.xml
+
+== 5 lutego 2010 ==
+  * dodałem helpery podłączające pliki stylów i js na podstawie wybranego kontrolera (oddzielne dla kontrolera)
+
+== 26 stycznia 2010 ==
+  * ścieżka do globalnej bilbioteki Zend jest przechowywana w public/.htaccess jako _SetEnv ZEND_PATH /usr/httpd/lib/external_ i ładowane w .index.php
+  * w application.ini przechowujemy:
+   * app.includes.jquery - ścieżka do podłączenia biblioteki jQuery (lokalna lub zewnętrzna)
+   * app.includes.jdupa - ścieżka do podłączenia biblioteki jDupa (lokalna lub zewnętrzna) 
+   * app.includes.extjs - ścieżka do podłączenia ExtJs (lokalna lub zewnętrzna) 
