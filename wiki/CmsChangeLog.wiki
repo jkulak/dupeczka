@@ -1,3 +1,4 @@
 #summary Cms application changelog
+#labels Cms,ChangeLog
 
 = Changelog =
