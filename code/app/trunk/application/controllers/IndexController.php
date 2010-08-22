@@ -10,10 +10,7 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        fb('$ram');
-        fb::log('jestem tutaj!');
-        fb::warn('jestem tutaj!');
-        //fb::error('jestem tutaj!');
+        // action body
     }
 
 
