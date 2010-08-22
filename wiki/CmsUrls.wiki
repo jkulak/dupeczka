@@ -8,8 +8,7 @@ RESTful URLs
 == Articles ==
 
 || *Description* || *URL* || Http method || 
-|| Main site || / || GET ||
-|| Articles list || /articles || GET ||
+|| Article list || /articles || GET ||
 || View article || /articles/{article_id} || GET ||
 || Edit article form || /articles/{article_id}/edit || GET ||
 || New article form || /articles/new || GET ||
@@ -20,7 +19,6 @@ RESTful URLs
 == Categories ==
 
 || *Description* || *URL* || Http method || 
-|| Main site || / || GET ||
 || Category list || /categories || GET ||
 || View category || /categories/{category_id} || GET ||
 || Edit category form || /categories/{category_id}/edit || GET ||
@@ -32,8 +30,7 @@ RESTful URLs
 == Galeries ==
 
 || *Description* || *URL* || Http method || 
-|| Main site || / || GET ||
-|| Galleries list || /galleries || GET ||
+|| Gallery list || /galleries || GET ||
 || View gallery || /galleries/{gallery_id} || GET ||
 || Edit gallery form || /galleries/{gallery_id}/edit || GET ||
 || New gallery form || /galleries/new || GET ||
@@ -44,8 +41,7 @@ RESTful URLs
 Or media/attachments? (videos, pictures, other files)
 
 || *Description* || *URL* || Http method || 
-|| Main site || / || GET ||
-|| Pictures list || /pictures || GET ||
+|| Picture list || /pictures || GET ||
 || View picture || /pictures/{picture_id} || GET ||
 || Edit picture form || /pictures/{picture_id}/edit || GET ||
 || New picture form || /pictures/new || GET ||
