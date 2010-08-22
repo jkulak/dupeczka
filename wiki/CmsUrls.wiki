@@ -1,4 +1,5 @@
 #summary URLs description for CMS
+#labels Cms,Url
 
 = Cms URLs =
 
