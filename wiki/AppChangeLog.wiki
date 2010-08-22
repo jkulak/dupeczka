@@ -1,12 +1,14 @@
-=Zmiany wprowadzane w starterze=
+#summary App starter changelog
 
-== 21 lutego 2010 ==
-  * dodałem odczytywanie routes z pliku konfiguracyjnego config/routes.xml
+= Changelog =
 
-== 5 lutego 2010 ==
+== 21-02-2010 ==
+  * using config/routes.xml for routing configuration
+
+== 5-02-2010 ==
   * dodałem helpery podłączające pliki stylów i js na podstawie wybranego kontrolera (oddzielne dla kontrolera)
 
-== 26 stycznia 2010 ==
+== 26-01-2010 ==
   * ścieżka do globalnej bilbioteki Zend jest przechowywana w public/.htaccess jako _SetEnv ZEND_PATH /usr/httpd/lib/external_ i ładowane w .index.php
   * w application.ini przechowujemy:
    * app.includes.jquery - ścieżka do podłączenia biblioteki jQuery (lokalna lub zewnętrzna)
