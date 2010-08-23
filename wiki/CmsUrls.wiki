@@ -12,7 +12,8 @@ RESTful URLs
 || View article || /articles/{article_id} || GET ||
 || Edit article form || /articles/{article_id}/edit || GET ||
 || New article form || /articles/new || GET ||
-|| Save/update article || /articles/{article_id} || POST ||
+|| Create article || /articles || POST ||
+|| Update article || /articles/{article_id} || POST ||
 || Delete article || /articles/{article_id}/delete || POST ||
 
 
@@ -23,7 +24,8 @@ RESTful URLs
 || View category || /categories/{category_id} || GET ||
 || Edit category form || /categories/{category_id}/edit || GET ||
 || New category form || /categories/new || GET ||
-|| Save/update category || /categories/{category_id} || POST ||
+|| Create category || /categories || POST ||
+|| Update category || /categories/{category_id} || POST ||
 || Delete category || /categories/{category_id}/delete || POST ||
 
 
@@ -34,7 +36,8 @@ RESTful URLs
 || View gallery || /galleries/{gallery_id} || GET ||
 || Edit gallery form || /galleries/{gallery_id}/edit || GET ||
 || New gallery form || /galleries/new || GET ||
-|| Save/update gallery || /galleries/{gallery_id} || POST ||
+|| Create gallery || /galeries || POST ||
+|| Update gallery || /galleries/{gallery_id} || POST ||
 || Delete gallery || /galleries/{gallery_id}/delete || POST ||
 
 == Pictures == 
@@ -45,5 +48,6 @@ Or media/attachments? (videos, pictures, other files)
 || View picture || /pictures/{picture_id} || GET ||
 || Edit picture form || /pictures/{picture_id}/edit || GET ||
 || New picture form || /pictures/new || GET ||
-|| Save/update picture || /pictures/{picture_id} || POST ||
+|| Create picture || /pictures || POST ||
+|| Update picture || /pictures/{picture_id} || POST ||
 || Delete picture || /pictures/{picture_id}/delete || POST ||
