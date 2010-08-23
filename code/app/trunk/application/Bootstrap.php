@@ -12,36 +12,46 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     return $moduleLoader;
   }
 
+  
+  protected function initializeDebug()
+  {
+    if ($view->appDebug['firePhpEnable'])
+           {
+             fb::setEnabled(true);
+           }
+             else
+           {
+             fb::setEnabled(false);
+           }
+  }
+  
   protected function _initApplication()
   {
-     // Pobieranie danych z pliku konfiguracyjnego (zaladowanego przez Bootstrap) i dodanie ich do rejestru
-     // $this->config = $this->getOptions();
-     // Zend_Registry::set('config', $this->config);
-   
-     // Odczytanie opcji z sekcj app
-     $appOptions = $this->getOption('app');
-     $view->appIncludes = $appOptions['includes'];
+    // Pobieranie danych z pliku konfiguracyjnego (zaladowanego przez Bootstrap) i dodanie ich do rejestru
+    // $this->config = $this->getOptions();
+    // Zend_Registry::set('config', $this->config);
 
-     $debugSettings = $appOptions['debug'];
-     
-    if ($debugSettings['firePhpEnable'])
-    {
-      fb::setEnabled(true);
-    }
-      else
-    {
-      fb::setEnabled(false);
-    }
+    // Odczytanie opcji z sekcj app
+    $appOptions = $this->getOption('app');
+
+    // $view->appIncludes = $appOptions['includes'];
+    // $view->appDebug = $appOptions['debug'];
+
+
+    // debugging
+    $writer = new Zend_Log_Writer_Firebug();
+    $this->logger = new Zend_Log($writer);
+
+    // // routing
+    //    $frontController = Zend_Controller_Front::getInstance();
+    //    $router = $frontController->getRouter();
+    //    
+    //    $routes = new Zend_Config_Xml(APPLICATION_PATH . '/configs/routes.xml', APPLICATION_ENV);
+    //    $router->addConfig($routes, 'routes');
     
-    $routes = new Zend_Config_Xml(APPLICATION_PATH . '/configs/routes.xml', APPLICATION_ENV);
-
     // $front = Zend_Controller_Front::getInstance(); 
-    //   $restRoute = new Zend_Rest_Route($front); 
-    //   $front->getRouter()->addRoute('default', $restRoute);
-
-    $frontController = Zend_Controller_Front::getInstance();
-    $router = $frontController->getRouter();
-    $router->addConfig($routes, 'routes');
+    // $restRoute = new Zend_Rest_Route($front);
+    // $front->getRouter()->addRoute('default', $restRoute);
   }
        
   protected function _initView()

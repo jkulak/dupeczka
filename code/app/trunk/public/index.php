@@ -28,7 +28,4 @@ $application = new Zend_Application(
     APPLICATION_PATH . '/configs/application.ini'
 );
 
-// FirePHP
-require_once 'firephp/fb.php';
-
 $application->bootstrap()->run();
