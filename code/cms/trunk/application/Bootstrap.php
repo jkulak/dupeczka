@@ -32,9 +32,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     // // routing
     $frontController = Zend_Controller_Front::getInstance();
     $router = $frontController->getRouter();
-
+    
+    // Zend_Controller_Router_Route::setDefaultTranslator($translator);
+    
     $routes = new Zend_Config_Xml(APPLICATION_PATH . '/configs/routes.xml', APPLICATION_ENV);
     $router->addConfig($routes, 'routes');
+    
     
     // $front = Zend_Controller_Front::getInstance(); 
     // $restRoute = new Zend_Rest_Route($front);
@@ -54,6 +57,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     
     $translator = new Zend_Translate('array', '../lang/en.php', 'en');
     $translator->addTranslation('../lang/pl.php', 'pl');
+    
+    $translator->setLocale('en');
     
     $navigation = new Zend_Config_Xml(APPLICATION_PATH . '/configs/navigation.xml', 'nav');
     $container = new Zend_Navigation($navigation);

@@ -4,9 +4,7 @@
     
     <home>
       <label>Home</label>
-      <controller>index</controller>
-      <action>index</action>
-      <!-- <uri>/</uri> -->
+      <uri>/</uri>
       <!-- <order>0</order> -->
     </home>
     
@@ -19,16 +17,14 @@
           <label>Add article</label>
           <controller>article</controller>
           <action>new</action>
-          <!-- <url>/articles/new</url> -->
+          <url>articles/new</url>
         </add>
       </pages>
     </articles>
     
     <categories>
       <label>Categories</label>
-      <controller>category</controller>
-      <action>index</action>
-      <uri>/categories</uri>
+      <uri>categories</uri>
     </categories> 
 
     <albums>
@@ -42,7 +38,7 @@
       <label>Xman</label>
       <controller>index</controller>
       <action>xman</action>
-      <uri>/xman</uri>
+      <uri>xman</uri>
       <pages>
         <wolverine>
           <label>Wolverine</label>

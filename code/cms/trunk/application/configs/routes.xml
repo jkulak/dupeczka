@@ -9,24 +9,21 @@
                 <controller>article</controller>
                 <action>index</action>
             </defaults>
-            <map>
-                <id>1</id>
-            </map>
             <reverse>articles</reverse>
         </articleList>
         
-        <articleView type="Zend_Controller_Router_Route_Regex">
-             <route>/articles/(.*)-(\d+).html</route>
+        <articleShow type="Zend_Controller_Router_Route_Regex">
+             <route>articles/(.+)-(\d+)\.html</route>
              <defaults>
                  <controller>article</controller>
-                 <action>view</action>
+                 <action>show</action>
              </defaults>
              <map>
                <seo>1</seo>
                <id>2</id>
              </map>
              <reverse>articles/%s-%d.html</reverse>
-         </articleView>
+         </articleShow>
          
           <articleEdit type="Zend_Controller_Router_Route_Regex">
                 <route>/articles/(\d+)/edit</route>
@@ -48,76 +45,7 @@
                   </defaults>
                   <reverse>articles/new</reverse>
               </articleNew>
-      
-      <!-- <about type="Zend_Controller_Router_Route">
-             <route>o-nas.html</route>
-             <defaults>
-               <controller>index</controller>
-               <action>abouts</action>
-             </defaults>
-           </about>
-           
-           <project type="Zend_Controller_Router_Route_Regex">
-               <route>project/(.*)</route>
-               <defaults>
-                   <controller>index</controller>
-                   <action>index</action>
-               </defaults>
-               <map>
-                   <title>1</title>
-               </map>
-           </project>
-
-           <news type="Zend_Controller_Router_Route_Regex">
-             <route>news/(.*)/?(.*)</route>
-             <defaults>
-                 <controller>index</controller>
-                 <action>shownews</action>
-             </defaults>
-             <map>
-               <title>1</title>
-               <xman>2</xman>
-             </map>
-           </news>
-
-           <article type="Zend_Controller_Router_Route_Regex">
-               <route>article/(.*)</route>
-               <defaults>
-                   <controller>index</controller>
-                   <action>showarticle</action>
-               </defaults>
-               <map>
-                   <title>1</title>
-               </map>
-           </article>
-
-           <shortcutone type="Zend_Controller_Router_Route">
-               <route>:module/:id</route>
-               <defaults>
-                   <controller>index</controller>
-                   <action>index</action>
-               </defaults>
-               <reqs id="\d+" />
-           </shortcutone>
-           
-           <shortcuttwo type="Zend_Controller_Router_Route">
-               <route>:module/:controller/:id</route>
-               <defaults>
-                   <controller>index</controller>
-               </defaults>
-               <reqs id="\d+" />
-           </shortcuttwo>
-           
-           <shortcutthree type="Zend_Controller_Router_Route">
-               <route>:module/:controller/:action/:id</route>
-               <defaults>
-                   <controller>index</controller>
-                   <action>index</action>
-               </defaults>
-               <reqs id="\d+" />
-           </shortcutthree> -->
-
-
+              
     </routes>
   </production>
   
