@@ -2,19 +2,52 @@
 <configdata>
   <production>
     <routes>
+      
+       <articleList type="Zend_Controller_Router_Route_Regex">
+            <route>articles</route>
+            <defaults>
+                <controller>article</controller>
+                <action>index</action>
+            </defaults>
+            <map>
+                <id>1</id>
+            </map>
+            <reverse>articles</reverse>
+        </articleList>
+        
+        <articleView type="Zend_Controller_Router_Route_Regex">
+             <route>/articles/(.*)-(\d+).html</route>
+             <defaults>
+                 <controller>article</controller>
+                 <action>view</action>
+             </defaults>
+             <map>
+               <seo>1</seo>
+               <id>2</id>
+             </map>
+             <reverse>articles/%s-%d.html</reverse>
+         </articleView>
+         
+          <articleEdit type="Zend_Controller_Router_Route_Regex">
+                <route>/articles/(\d+)/edit</route>
+                <defaults>
+                    <controller>article</controller>
+                    <action>edit</action>
+                </defaults>
+                <map>
+                  <id>1</id>
+                </map>
+                <reverse>articles/%d/edit</reverse>
+            </articleEdit>
 
-      <project type="Zend_Controller_Router_Route_Regex">
-           <route>article</route>
-           <defaults>
-               <controller>article</controller>
-               <action>index</action>
-           </defaults>
-           <map>
-               <title>1</title>
-           </map>
-       </project>
-      
-      
+            <articleNew type="Zend_Controller_Router_Route_Regex">
+                  <route>articles/new</route>
+                  <defaults>
+                      <controller>article</controller>
+                      <action>new</action>
+                  </defaults>
+                  <reverse>articles/new</reverse>
+              </articleNew>
       
       <!-- <about type="Zend_Controller_Router_Route">
              <route>o-nas.html</route>

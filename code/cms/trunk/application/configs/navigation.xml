@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <nav>
+    
+    <home>
+      <label>Home</label>
+      <controller>index</controller>
+      <action>index</action>
+      <!-- <uri>/</uri> -->
+      <!-- <order>0</order> -->
+    </home>
+    
+    <articles>
+      <label>Articles</label>
+      <class>important</class>
+      <route>articleList</route>
+      <pages>
+        <add>
+          <label>Add article</label>
+          <controller>article</controller>
+          <action>new</action>
+          <!-- <url>/articles/new</url> -->
+        </add>
+      </pages>
+    </articles>
+    
+    <categories>
+      <label>Categories</label>
+      <controller>category</controller>
+      <action>index</action>
+      <uri>/categories</uri>
+    </categories> 
+
+    <albums>
+      <label>Albums</label>
+      <controller>album</controller>
+      <action>index</action>
+      <uri>/albums</uri>
+    </albums>
+
+    <xman>
+      <label>Xman</label>
+      <controller>index</controller>
+      <action>xman</action>
+      <uri>/xman</uri>
+      <pages>
+        <wolverine>
+          <label>Wolverine</label>
+          <uri>/wolverine</uri>
+        </wolverine>
+      </pages>
+    </xman>
+
+  </nav>
+</config>

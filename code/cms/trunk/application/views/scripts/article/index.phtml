@@ -1,0 +1,12 @@
+<h2><?php echo $this->translate('Article list') ?></h2>
+
+
+
+<!-- pokaz liste artykulow -->
+
+  <?php
+    echo $this->partialLoop()->setObjectKey('article')->partialLoop('article/_brief.phtml', $this->articleList);
+  ?>
+
+
+<?php echo $this->partial('article/url/new.phtml') ?>

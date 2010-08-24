@@ -11,19 +11,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
        );
     return $moduleLoader;
   }
-
-  
-  protected function initializeDebug()
-  {
-    if ($view->appDebug['firePhpEnable'])
-           {
-             fb::setEnabled(true);
-           }
-             else
-           {
-             fb::setEnabled(false);
-           }
-  }
   
   protected function _initApplication()
   {
@@ -43,11 +30,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     $this->logger = new Zend_Log($writer);
 
     // // routing
-    //    $frontController = Zend_Controller_Front::getInstance();
-    //    $router = $frontController->getRouter();
-    //    
-    //    $routes = new Zend_Config_Xml(APPLICATION_PATH . '/configs/routes.xml', APPLICATION_ENV);
-    //    $router->addConfig($routes, 'routes');
+    $frontController = Zend_Controller_Front::getInstance();
+    $router = $frontController->getRouter();
+
+    $routes = new Zend_Config_Xml(APPLICATION_PATH . '/configs/routes.xml', APPLICATION_ENV);
+    $router->addConfig($routes, 'routes');
     
     // $front = Zend_Controller_Front::getInstance(); 
     // $restRoute = new Zend_Rest_Route($front);
@@ -64,6 +51,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
     $view->headTitle()->setSeparator(' - ');
     $view->headTitle('Kopytko masakra');
+    
+    $translator = new Zend_Translate('array', '../lang/en.php', 'en');
+    $translator->addTranslation('../lang/pl.php', 'pl');
+    
+    $navigation = new Zend_Config_Xml(APPLICATION_PATH . '/configs/navigation.xml', 'nav');
+    $container = new Zend_Navigation($navigation);
+    
+    $view->navigation()->setTranslator($translator);    
+    $view->navigation($container);
+
   }
 
 }
