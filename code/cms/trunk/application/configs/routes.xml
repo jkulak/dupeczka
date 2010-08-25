@@ -20,7 +20,8 @@
        <articleList>
             <route>/articles</route>
             <defaults>
-
+              <controller>article</controller>
+              <action>index</action>
             </defaults>
             <reverse>/articles</reverse>
         </articleList>
