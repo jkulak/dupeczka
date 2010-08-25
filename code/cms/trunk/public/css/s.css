@@ -81,7 +81,7 @@ nav ul li {
 */}
 
 nav ul li.active > a {
-  color: lime;
+  color: white;
 }
 
 #breadcrumbs {
