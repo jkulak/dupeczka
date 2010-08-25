@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
   <nav>
-    <latte>
+    <home>
       <uri>/</uri>
-      <label>Latte</label>
+      <label>Home</label>
       <route>homeSite</route>
       <pages>
         
@@ -49,6 +49,6 @@
           </pages>
         </xman>
       </pages>
-    </latte>
+    </home>
   </nav>
 </config>
