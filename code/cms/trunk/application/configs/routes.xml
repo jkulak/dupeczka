@@ -4,70 +4,99 @@
     <routes>
       
       <homeSite type="Zend_Controller_Router_Route_Static">
-            <route></route>
-            <defaults>
-              <controller>index</controller>
-              <action>index</action>
-            </defaults>
-            <reverse></reverse>
-        </homeSite>
-
-        <categories>
-              <route>/categories</route>
-              <reverse>/categories</reverse>
-          </categories>
+        <route/>
+        <defaults>
+          <controller>index</controller>
+          <action>index</action>
+        </defaults>
+        <reverse/>
+      </homeSite>
       
-       <articleList>
-            <route>/articles</route>
-            <defaults>
-              <controller>article</controller>
-              <action>index</action>
-            </defaults>
-            <reverse>/articles</reverse>
-        </articleList>
-        
-        <articleNew>
-              <route>/articles/new</route>
-              <defaults>
-                <controller>article</controller>
-                <action>new</action>
-              </defaults>
-              <reverse>/articles/new</reverse>
-        </articleNew>
-        
-        <albums>
-             <route>/albums</route>
-             <reverse>/albums</reverse>
-         </albums>
-        
-        <articleShow type="Zend_Controller_Router_Route_Regex">
-             <route>/articles/(.+)-(\d+)\.html</route>
-             <defaults>
-                 <controller>article</controller>
-                 <action>show</action>
-             </defaults>
-             <map>
-               <seo>1</seo>
-               <id>2</id>
-             </map>
-             <reverse>/articles/%s-%d.html</reverse>
-         </articleShow>
-         
-          <articleEdit type="Zend_Controller_Router_Route_Regex">
-                <route>/articles/(\d+)/edit</route>
-                <defaults>
-                    <controller>article</controller>
-                    <action>edit</action>
-                </defaults>
-                <map>
-                  <id>1</id>
-                </map>
-                <reverse>/articles/%d/edit</reverse>
-            </articleEdit>
-              
+      <!-- articles -->
+      
+      <articles>
+        <route>/articles</route>
+        <defaults>
+          <controller>article</controller>
+          <action>index</action>
+        </defaults>
+        <reverse>/articles</reverse>
+      </articles>
+      
+      <articleNew>
+        <route>/articles/new</route>
+        <defaults>
+          <controller>article</controller>
+          <action>new</action>
+        </defaults>
+        <reverse>/articles/new</reverse>
+      </articleNew>
+      
+      <articleShow type="Zend_Controller_Router_Route_Regex">
+        <route>/articles/(.+)-(\d+)</route>
+        <defaults>
+          <controller>article</controller>
+          <action>show</action>
+        </defaults>
+        <map>
+          <seo>1</seo>
+          <id>2</id>
+        </map>
+        <reverse>/articles/%s-%d</reverse>
+      </articleShow>
+      
+      <articleEdit type="Zend_Controller_Router_Route_Regex">
+        <route>/articles/(\d+)/edit</route>
+        <defaults>
+          <controller>article</controller>
+          <action>edit</action>
+        </defaults>
+        <map>
+          <id>1</id>
+        </map>
+        <reverse>/articles/%d/edit</reverse>
+      </articleEdit>
+      
+      <!-- categories -->
+      <categories>
+        <route>/categories</route>
+        <defaults>
+          <controller>category</controller>
+          <action>index</action>
+        </defaults>
+        <reverse>/categories</reverse>
+      </categories>
+      
+      <categoryNew>
+        <route>/categories/new</route>
+        <defaults>
+          <controller>category</controller>
+          <action>new</action>
+        </defaults>
+        <reverse>/categories/new</reverse>
+      </categoryNew>
+      
+      <!-- albums -->
+      
+      <albums>
+        <route>/albums</route>
+        <defaults>
+          <controller>album</controller>
+          <action>index</action>
+        </defaults>
+        <reverse>/albums</reverse>
+      </albums>
+      
+      <albumNew>
+        <route>/albums/new</route>
+        <defaults>
+          <controller>album</controller>
+          <action>new</action>
+        </defaults>
+        <reverse>/albums/new</reverse>
+      </albumNew>
     </routes>
   </production>
-  
   <development extends="production">
     
   </development>

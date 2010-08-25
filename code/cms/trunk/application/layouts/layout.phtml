@@ -16,6 +16,13 @@
 <body>
 <div id="content">
   <h1>{name}CMS</h1>
+  
+  <!-- message box -->
+  <?php if (isset($this->messageType)) { ?>
+  <div id="message" class="<?php echo $this->messageType; ?>">
+    <?php echo $this->message; ?>
+  </div>
+  <?php } ?>
 
   <!-- <h3><?php echo $this->translate('Main menu') ?></h3> -->
   <nav>

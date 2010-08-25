@@ -8,10 +8,17 @@ class Model_Article
   protected $_lead;
   protected $_body;
   protected $_author;
+  protected $_categoryId;
   
   
-  function __construct() {
-    
+  function __construct($params = array()) {
+    if (sizeof($params)) {
+      $this->_title = $params['title'];
+      $this->_lead = $params['lead'];
+      $this->_body = $params['body'];
+      $this->_author = $params['author'];
+      $this->_categoryId = $params['categoryId'];
+    }
   }
   
   public function __set($name, $value)
@@ -85,5 +92,22 @@ class Model_Article
   public function getAuthor()
   {
     return $this->_author;
+  }
+  
+  public function setCategoryId($categoryId)
+  {
+    $this->_categoryId = (int) $categoryId;
+    return $this;
+  }
+
+  public function getCategoryId()
+  {
+    return $this->_categoryId;
+  }
+  
+  public function save() {
+    //tutaj pobieram instancje Article_Dao
+    // i jako parametr przekazuje $this, albo $this->toArra();
+    return true;
   }
 }

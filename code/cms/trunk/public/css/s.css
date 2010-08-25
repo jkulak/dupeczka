@@ -41,9 +41,7 @@ ul {
 }
 
 form * {
-  vertical-align: baseline;
-  vertical-align: text-bottom;
-  vertical-align: middle;;
+  vertical-align: 10%;
 }
 
 textarea,
@@ -71,6 +69,10 @@ input[type=text] {
 select {
   height: 32px;
   cursor: pointer;
+}
+
+input[type="text"] {
+  width: 390px;
 }
 
 input[type=button],
@@ -146,6 +148,22 @@ nav ul li.active > a {
   width: 40%;
   text-align: center;
   color: white;
+}
+
+#message {
+  padding: 10px;
+  font-size: 20px;
+}
+
+div.notice {
+  border: 1px solid #63C44E;
+  background-color: #ECF8ED;
+}
+
+.error {
+  display: block;
+  border: 1px solid #C44C58;
+  background-color: #F8E8E5;
 }
 
 /* /common */

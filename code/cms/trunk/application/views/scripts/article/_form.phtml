@@ -1,0 +1,28 @@
+<form action="<?php echo $this->url(array(), 'articles'); ?>" method="post" accept-charset="utf-8">
+
+<p>
+  <label for="title"><?php echo $this->translate('Title'); ?></label>
+  <input type="text" name="title" value="<?php echo $this->object->title; ?>" id="title">
+</p>
+<p>
+  <label for="lead"><?php echo $this->translate('Lead'); ?></label>
+  <input type="text" name="lead" value="<?php echo $this->object->lead; ?>" id="lead">
+</p>
+<p>
+  <label for="categoryId"><?php echo $this->translate('Category'); ?></label>
+  <select name="categoryId" id="categoryId">
+    <?php // $this->partialLoop('categories'); ?>
+    <option value="option1">Main</option>
+    <option value="option2">Cars</option>    
+  </select>
+</p>  
+<p>
+  <label for="body"><?php echo $this->translate('Article'); ?></label><br />
+  <textarea name="body" rows="8" cols="90"><?php echo $this->object->body; ?></textarea>
+</p>
+<p>
+  <label for="author"><?php echo $this->translate('Author'); ?></label>
+  <input type="text" name="author" value="<?php echo $this->object->author; ?>" id="author">
+</p>
+  <p><input type="submit" value="<?php echo $this->translate('Create'); ?> &rarr;"></p>
+</form>

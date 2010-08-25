@@ -19,6 +19,16 @@
           <actionMethod actionName="delete"/>
           <actionMethod actionName="list"/>
           <actionMethod actionName="new"/>
+          <actionMethod actionName="view"/>
+        </controllerFile>
+        <controllerFile controllerName="Category">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="edit"/>
+          <actionMethod actionName="new"/>
+        </controllerFile>
+        <controllerFile controllerName="Album">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="new"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
@@ -52,6 +62,24 @@
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Article">
+            <viewScriptFile forActionName="new"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Album">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="edit"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Article">
+            <viewScriptFile forActionName="view"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Category">
+            <viewScriptFile forActionName="new"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Album">
             <viewScriptFile forActionName="new"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
@@ -89,6 +117,8 @@
         <testApplicationBootstrapFile filesystemName="bootstrap.php"/>
         <testApplicationControllerDirectory>
           <testApplicationControllerFile filesystemName="ArticleControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="CategoryControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="AlbumControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

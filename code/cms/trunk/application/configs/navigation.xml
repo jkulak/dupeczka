@@ -7,9 +7,9 @@
       <route>homeSite</route>
       <pages>
         
-        <articleList>
+        <articles>
           <label>Articles</label>
-          <route>articleList</route>
+          <route>articles</route>
           <controller>article</controller>
           <action>index</action>
           <pages>
@@ -22,32 +22,42 @@
             </add>
           
           </pages>
-        </articleList>
+        </articles>
     
         <categories>
           <label>Categories</label>
           <controller>category</controller>
           <action>index</action>
           <route>categories</route>
-        </categories> 
+           <pages>
 
+              <add>
+                <label>New category</label>
+                <route>categoryNew</route>
+                <controller>category</controller>
+                <action>new</action>
+              </add>
+
+            </pages>
+        </categories>
+        
         <albums>
           <label>Albums</label>
-          <controller>albums</controller>
+          <controller>album</controller>
           <action>index</action>
           <route>albums</route>
+           <pages>
+
+              <add>
+                <label>New album</label>
+                <route>albumNew</route>
+                <controller>album</controller>
+                <action>new</action>
+              </add>
+
+            </pages>
         </albums>
 
-        <xman>
-          <label>Xman</label>
-          <uri>xman</uri>
-          <pages>
-            <wolverine>
-              <label>Wolverine</label>
-              <uri>wolverine</uri>
-            </wolverine>
-          </pages>
-        </xman>
       </pages>
     </home>
   </nav>

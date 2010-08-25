@@ -10,40 +10,51 @@ class ArticleController extends Zend_Controller_Action
 
     public function indexAction()
     {
+      $articleMapper = new Model_ArticleMapper();
+      $this->view->articleList = $articleMapper->fetchAll();
       
-//      require_once(APPLICATION_PATH . '/models/Article.php');
-      $articles = new Model_ArticleMapper();
-      $this->view->articleList = $articles->fetchAll();
-    }
-
-    public function addAction()
-    {
-        // action body
+      if ( $this->getRequest()->getMethod() == 'POST' ){
+        $params = $this->getRequest()->getParams();
+        $article = new Model_Article($params);
+        if ( $article->save() ) {
+          $this->view->messageType = "notice";
+          $this->view->message = $this->view->translate("Article saved");
+        }
+        else {
+          $this->view->messageType = "error";
+          $this->view->message = $this->view->translate("Article save failed");
+        }
+      }
     }
 
     public function editAction()
     {
         // action body
-        echo 'jestem edit action';
+                // formuarz edycji
     }
 
     public function deleteAction()
     {
         // action body
+                // formularz kasowania?
     }
 
     public function newAction()
     {
-        // action body
+      // action body
+      // formularz dodawania
+      $this->view->article = new Model_Article();
     }
-    
-    public function showAction()
-    {
 
+    public function viewAction()
+    {
+        // action body
     }
 
 
 }
+
+
 
 
 
