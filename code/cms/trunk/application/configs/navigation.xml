@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
   <nav>
-    
-    <home>
-      <label>Home</label>
+    <latte>
       <uri>/</uri>
-      <!-- <order>0</order> -->
-    </home>
-    
-    <articles>
-      <label>Articles</label>
-      <class>important</class>
-      <route>articleList</route>
+      <label>Latte</label>
+      <route>homeSite</route>
       <pages>
-        <add>
-          <label>Add article</label>
+        
+        <articleList>
+          <label>Articles</label>
+          <route>articleList</route>
           <controller>article</controller>
-          <action>new</action>
-          <url>articles/new</url>
-        </add>
-      </pages>
-    </articles>
+          <action>index</action>
+          <pages>
+            
+            <add>
+              <label>Add article</label>
+              <route>articleNew</route>
+              <controller>article</controller>
+              <action>new</action>
+            </add>
+          
+          </pages>
+        </articleList>
     
-    <categories>
-      <label>Categories</label>
-      <uri>categories</uri>
-    </categories> 
+        <categories>
+          <label>Categories</label>
+          <controller>category</controller>
+          <action>index</action>
+          <route>categories</route>
+        </categories> 
 
-    <albums>
-      <label>Albums</label>
-      <controller>album</controller>
-      <action>index</action>
-      <uri>/albums</uri>
-    </albums>
+        <albums>
+          <label>Albums</label>
+          <controller>albums</controller>
+          <action>index</action>
+          <route>albums</route>
+        </albums>
 
-    <xman>
-      <label>Xman</label>
-      <controller>index</controller>
-      <action>xman</action>
-      <uri>xman</uri>
-      <pages>
-        <wolverine>
-          <label>Wolverine</label>
-          <uri>/wolverine</uri>
-        </wolverine>
+        <xman>
+          <label>Xman</label>
+          <uri>xman</uri>
+          <pages>
+            <wolverine>
+              <label>Wolverine</label>
+              <uri>wolverine</uri>
+            </wolverine>
+          </pages>
+        </xman>
       </pages>
-    </xman>
-
+    </latte>
   </nav>
 </config>

@@ -14,6 +14,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
   
   protected function _initApplication()
   {
+    
+    
+    
     // Pobieranie danych z pliku konfiguracyjnego (zaladowanego przez Bootstrap) i dodanie ich do rejestru
     // $this->config = $this->getOptions();
     // Zend_Registry::set('config', $this->config);
@@ -36,7 +39,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     // Zend_Controller_Router_Route::setDefaultTranslator($translator);
     
     $routes = new Zend_Config_Xml(APPLICATION_PATH . '/configs/routes.xml', APPLICATION_ENV);
+    
+    $router->removeDefaultRoutes();
+    
     $router->addConfig($routes, 'routes');
+    
+    $frontController->setBaseUrl('/');
+    
+    
+    
+    
     
     
     // $front = Zend_Controller_Front::getInstance(); 
@@ -63,8 +75,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     $navigation = new Zend_Config_Xml(APPLICATION_PATH . '/configs/navigation.xml', 'nav');
     $container = new Zend_Navigation($navigation);
     
+    
+
+    
+    // print_r($container);
+    
     $view->navigation()->setTranslator($translator);    
     $view->navigation($container);
+    
+    Zend_Registry::set('Zend_Navigation',$navigation);
 
   }
 

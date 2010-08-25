@@ -1,15 +1,97 @@
 /* styles for ... */
 
+@font-face {
+	font-family: Aaargh;
+	src: url('../fonts/Aaargh.ttf');
+}
+
 
 /* GLOBAL RESET */
-/** {
+* {
   margin: 0;
   padding: 0;
   border: 0;
-}*/
+}
+
+a {
+  color: #e09300;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ffb504;
+/*  text-decoration: underline;*/
+}
 
 h1 {
-	font-family: Verdana,sans-serif;
-	font-size: 2em;
-	color: red;
+	font-size: 3em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h1, h2, h3 {
+  color: #606060;
+	text-shadow: #101010 0 -1px 1px;
+/*  font-style: italic;*/
+	margin-bottom: 10px;
+}
+
+.grey {
+  color: #606060;
+	text-shadow: #101010 0 -1px 1px;
+}
+
+body {
+  background-image: url(../s/noisebg.png);
+  font-family: "Aaargh", "Lucida sans", Georgia, Verdana,sans-serif;
+  position: relative;
+}
+
+ul {
+  padding-left: 20px;
+  margin: 10px 0 10px 0;
+}
+
+#content {
+  position: relative;
+  margin: 10px;
+}
+
+nav {
+  position: fixed;
+  top: 40px;
+  right: 10px;
+  background-image: url(../s/semiblack.png);
+  z-index: 100;
+  border: 3px solid black;
+  color: white;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 10px;
+/*  display: inline;*/
+}
+
+nav ul li {
+/*  float: left;
+  margin-right: 10px;
+*/}
+
+nav ul li.active > a {
+  color: lime;
+}
+
+#breadcrumbs {
+  position: fixed;
+  top: 5px;
+  right: 30%;
+  background-image: url(../s/semiblack.png);
+  z-index: 100;
+  padding: 5px;
+  width: 40%;
+  text-align: center;
+  color: white;
 }

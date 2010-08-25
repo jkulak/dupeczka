@@ -3,17 +3,44 @@
   <production>
     <routes>
       
-       <articleList type="Zend_Controller_Router_Route_Regex">
-            <route>articles</route>
+      <homeSite type="Zend_Controller_Router_Route_Static">
+            <route></route>
             <defaults>
-                <controller>article</controller>
-                <action>index</action>
+              <controller>index</controller>
+              <action>index</action>
             </defaults>
-            <reverse>articles</reverse>
+            <reverse></reverse>
+        </homeSite>
+
+        <categories>
+              <route>/categories</route>
+              <reverse>/categories</reverse>
+          </categories>
+      
+       <articleList>
+            <route>/articles</route>
+            <defaults>
+
+            </defaults>
+            <reverse>/articles</reverse>
         </articleList>
         
+        <articleNew>
+              <route>/articles/new</route>
+              <defaults>
+                <controller>article</controller>
+                <action>new</action>
+              </defaults>
+              <reverse>/articles/new</reverse>
+        </articleNew>
+        
+        <albums>
+             <route>/albums</route>
+             <reverse>/albums</reverse>
+         </albums>
+        
         <articleShow type="Zend_Controller_Router_Route_Regex">
-             <route>articles/(.+)-(\d+)\.html</route>
+             <route>/articles/(.+)-(\d+)\.html</route>
              <defaults>
                  <controller>article</controller>
                  <action>show</action>
@@ -22,7 +49,7 @@
                <seo>1</seo>
                <id>2</id>
              </map>
-             <reverse>articles/%s-%d.html</reverse>
+             <reverse>/articles/%s-%d.html</reverse>
          </articleShow>
          
           <articleEdit type="Zend_Controller_Router_Route_Regex">
@@ -34,17 +61,8 @@
                 <map>
                   <id>1</id>
                 </map>
-                <reverse>articles/%d/edit</reverse>
+                <reverse>/articles/%d/edit</reverse>
             </articleEdit>
-
-            <articleNew type="Zend_Controller_Router_Route_Regex">
-                  <route>articles/new</route>
-                  <defaults>
-                      <controller>article</controller>
-                      <action>new</action>
-                  </defaults>
-                  <reverse>articles/new</reverse>
-              </articleNew>
               
     </routes>
   </production>

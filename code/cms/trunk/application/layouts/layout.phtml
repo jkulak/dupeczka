@@ -14,25 +14,27 @@
 <meta name="author" content="">
 </head>
 <body>
-
-<h1>LatteCMS</h1>
-
-<h3><?php echo $this->translate('Main menu') ?></h3>
-<nav>
-<?php
-  // $partial = array('common/nav.phtml', 'default');
-  // $this->navigation()->menu()->setPartial($partial);
-  echo $this->navigation()->menu()->render(); //->setOnlyActiveBranch(true);
-?>
-</nav>
-
-<h3><?php echo $this->translate('Breadcrumbs') ?></h3>
-
-
-<?php echo $this->navigation()->breadcrumbs()?>
-
 <div id="content">
-	<?php echo $this->layout()->content; ?>
+  <h1>LatteCMS</h1>
+
+  <!-- <h3><?php echo $this->translate('Main menu') ?></h3> -->
+  <nav>
+  <?php
+    // $partial = array('common/nav.phtml', 'default');
+    // $this->navigation()->menu()->setPartial($partial);
+    echo $this->navigation()->menu()->render(); //->setOnlyActiveBranch(true);
+  ?>
+  </nav>
+
+  <!-- <h3><?php echo $this->translate('Breadcrumb') ?></h3> -->
+
+  <div id="breadcrumbs">
+    <?php echo $this->navigation()->breadcrumbs()->render(); ?>
+  </div>
+  
+  <div id="content">
+  	<?php echo $this->layout()->content; ?>
+  </div>
 </div>
 </body>
 </html>
