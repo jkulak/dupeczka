@@ -1,1 +1,3 @@
-<a href="<?php echo $this->url(array('id' => $this->id, 'seo' => $this->title), 'articleShow') ?>"><?php echo $this->title ?></a>
+<!-- dodac tutaj seo => $this->seo - pod warunkiem, ze jest ustalone, jak nie, to $this->title -->
+
+<a href="<?php echo $this->url(array('id' => $this->id, 'seo' => $this->title), 'article') ?>"><?php echo $this->title ?></a>

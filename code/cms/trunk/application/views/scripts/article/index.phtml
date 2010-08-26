@@ -1,3 +1,7 @@
 <h2><?php echo $this->translate('Article list') ?></h2>
-<?php echo $this->partialLoop()->setObjectKey('article')->partialLoop('article/_brief.phtml', $this->articleList); ?>
+<div class="article list brief">
+  <ul>
+    <?php echo $this->partialLoop()->setObjectKey('article')->partialLoop('article/_brief.phtml', $this->articleList); ?>
+  </ul>
+</div>
 <?php echo $this->partial('article/url/new.phtml') ?>

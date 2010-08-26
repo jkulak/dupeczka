@@ -29,8 +29,9 @@ class ArticleController extends Zend_Controller_Action
 
     public function editAction()
     {
-        // action body
-                // formuarz edycji
+      $articleMapper = new Model_ArticleMapper(); 
+      $params = $this->getRequest()->getParams();
+      $this->view->article = $articleMapper->find($params['id']);
     }
 
     public function deleteAction()
@@ -43,12 +44,25 @@ class ArticleController extends Zend_Controller_Action
     {
       // action body
       // formularz dodawania
-      $this->view->article = new Model_Article();
+     $this->view->article = new Model_Article();
+     // print_r($this->view->article);
     }
 
     public function viewAction()
     {
-        // action body
+      // ta czesc jest identyczna jak dla indexAction()
+      if ( $this->getRequest()->getMethod() == 'POST' ){
+        $params = $this->getRequest()->getParams();        
+        $article = new Model_Article($params);
+        if ( $article->save() ) {
+          $this->view->messageType = "notice";
+          $this->view->message = $this->view->translate("Article saved");
+        }
+        else {
+          $this->view->messageType = "error";
+          $this->view->message = $this->view->translate("Article save failed");
+        }
+      }
     }
 
 

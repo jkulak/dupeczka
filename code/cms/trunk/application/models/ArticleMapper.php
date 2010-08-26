@@ -1,5 +1,8 @@
 <?php
 
+
+// zakladajac, ze strona i cms to oddzielne mechanizmy
+// to tez musi byc wyniesione na zewnatrz jako Dupa_Model_ArticleMaper (Dupa_Model_Article_Api)
 class Model_ArticleMapper
 {
   
@@ -7,27 +10,23 @@ class Model_ArticleMapper
     
   }
   
-  //public function save($model);
-  //public function find($id, $model);
-  
   public function fetchAll()
   {
     $db = new Model_DbTable_Article();
     $resultSet = $db->fetchAll();
-    
     $entries = array();
     foreach ( $resultSet as $row )
     {
-      $entry = new Model_Article();
-      $entry->setId($row[0])
-          ->setTitle($row[1])
-          ->setLead($row[2])
-          ->setBody($row[3])
-          ->setAuthor($row[4]);
-      $entries[] = $entry;
+      $entries[] = new Model_Article($row);
     }
-    
     return $entries; 
+  }
+  
+  public function find($id = null)
+  {
+    $db = new Model_DbTable_Article();
+    $row = $db->find($id);
+    return new Model_Article($row);
   }
 }
 

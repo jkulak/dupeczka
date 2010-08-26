@@ -155,7 +155,7 @@ nav ul li.active > a {
   font-size: 20px;
 }
 
-div.notice {
+.notice {
   border: 1px solid #63C44E;
   background-color: #ECF8ED;
 }

@@ -13,6 +13,9 @@ class Model_Article
   
   function __construct($params = array()) {
     if (sizeof($params)) {
+      if (isset($params['id'])) {
+        $this->_id = $params['id'];
+      }
       $this->_title = $params['title'];
       $this->_lead = $params['lead'];
       $this->_body = $params['body'];
@@ -107,7 +110,8 @@ class Model_Article
   
   public function save() {
     //tutaj pobieram instancje Article_Dao
-    // i jako parametr przekazuje $this, albo $this->toArra();
+    // i jako parametr przekazuje $this, albo $this->toArray();
+    // jezeli sie da, to na podstawie istnienia id albo update albo insert na bazie
     return true;
   }
 }

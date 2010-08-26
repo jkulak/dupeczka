@@ -1,4 +1,4 @@
-<form action="<?php echo $this->url(array(), 'articles'); ?>" method="post" accept-charset="utf-8">
+<form action="<?php echo ($this->object->getId() != null)?$this->url(array('id' => $this->object->id, 'seo' => $this->object->title), 'article'):$this->url(array(), 'articles'); ?>" method="post" accept-charset="utf-8">
 
 <p>
   <label for="title"><?php echo $this->translate('Title'); ?></label>
@@ -24,5 +24,8 @@
   <label for="author"><?php echo $this->translate('Author'); ?></label>
   <input type="text" name="author" value="<?php echo $this->object->author; ?>" id="author">
 </p>
-  <p><input type="submit" value="<?php echo $this->translate('Create'); ?> &rarr;"></p>
+  <p>
+    <input type="submit" value="<?php echo $this->translate('Create'); ?> &rarr;">
+  </p>
+  <input type="hidden" name="id" value="<?php echo $this->object->id; ?>" id="id">
 </form>
