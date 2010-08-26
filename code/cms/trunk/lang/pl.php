@@ -3,4 +3,5 @@
 return array(
    'Articles' => 'Artykuły',
    'Categories' => 'Kategorie',
-   'Albums' => 'Albumy');
+   'Albums' => 'Albumy',
+   'Title' => 'Tytuł');

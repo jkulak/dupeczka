@@ -17,8 +17,8 @@
   </select>
 </p>  
 <p>
-  <label for="body"><?php echo $this->translate('Article'); ?></label><br />
-  <textarea name="body" rows="8" cols="90"><?php echo $this->object->body; ?></textarea>
+  <?php echo $this->FormLabel('body', $this->translate('Article')); ?><br />
+  <?php echo $this->FormTextarea('body', $this->object->body); ?>
 </p>
 <p>
   <label for="author"><?php echo $this->translate('Author'); ?></label>

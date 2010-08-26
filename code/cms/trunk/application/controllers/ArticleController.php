@@ -10,12 +10,17 @@ class ArticleController extends Zend_Controller_Action
 
     public function indexAction()
     {
-      $articleMapper = new Model_ArticleMapper();
-      $this->view->articleList = $articleMapper->fetchAll();
+      $articleApi = new Model_Article_Api();
+      $this->view->articleList = $articleApi->fetchAll();
       
       if ( $this->getRequest()->getMethod() == 'POST' ){
+        
         $params = $this->getRequest()->getParams();
-        $article = new Model_Article($params);
+        
+        $articleApi = new Model_Article_Api();
+        $articleApi->insert(new Model_Article_Container($params));
+        
+        
         if ( $article->save() ) {
           $this->view->messageType = "notice";
           $this->view->message = $this->view->translate("Article saved");
@@ -24,6 +29,7 @@ class ArticleController extends Zend_Controller_Action
           $this->view->messageType = "error";
           $this->view->message = $this->view->translate("Article save failed");
         }
+        // dodacredirect
       }
     }
 
@@ -67,16 +73,3 @@ class ArticleController extends Zend_Controller_Action
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -2,11 +2,14 @@
 
 <!-- <div class="article brief">
   <ul> -->
-    <li>
-      <?php echo $this->partial('article/url/view.phtml', array('id' => $this->article->id, 'title' => $this->article->id . '. ' . $this->article->title)) ?>
-      (<?php echo $this->partial()->setObjectKey('xman')->partial('article/url/edit.phtml', array('id' => $this->article->id)) ?>, <?php echo $this->translate('Delete') ?>)
-    </li>
+
     <!-- <li><?php echo $this->escape($this->article->lead) ?></li> -->
   <!-- </ul>
 </div> -->
 
+<tr>
+  <td><?php echo $this->article->id; ?></td>
+  <td><?php echo $this->partial('article/url/view.phtml', array('id' => $this->article->id, 'title' => $this->article->title)) ?></td>
+  <td><?php echo $this->partial()->setObjectKey('xman')->partial('article/url/edit.phtml', array('id' => $this->article->id)) ?></td>
+  <td><?php echo $this->translate('Delete') ?></td>
+</tr>

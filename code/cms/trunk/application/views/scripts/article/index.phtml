@@ -1,7 +1,7 @@
 <h2><?php echo $this->translate('Article list') ?></h2>
 <div class="article list brief">
-  <ul>
+  <table width="75%">
     <?php echo $this->partialLoop()->setObjectKey('article')->partialLoop('article/_brief.phtml', $this->articleList); ?>
-  </ul>
+  </table>
 </div>
 <?php echo $this->partial('article/url/new.phtml') ?>
