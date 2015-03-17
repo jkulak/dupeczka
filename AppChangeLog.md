@@ -1,0 +1,14 @@
+# Changelog #
+
+## 21-02-2010 ##
+  * using config/routes.xml for routing configuration
+
+## 5-02-2010 ##
+  * dodałem helpery podłączające pliki stylów i js na podstawie wybranego kontrolera (oddzielne dla kontrolera)
+
+## 26-01-2010 ##
+  * ścieżka do globalnej bilbioteki Zend jest przechowywana w public/.htaccess jako _SetEnv ZEND\_PATH /usr/httpd/lib/external_ i ładowane w .index.php
+  * w application.ini przechowujemy:
+    * app.includes.jquery - ścieżka do podłączenia biblioteki jQuery (lokalna lub zewnętrzna)
+    * app.includes.jdupa - ścieżka do podłączenia biblioteki jDupa (lokalna lub zewnętrzna)
+    * app.includes.extjs - ścieżka do podłączenia ExtJs (lokalna lub zewnętrzna)
